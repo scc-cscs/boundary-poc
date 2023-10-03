@@ -16,24 +16,30 @@ terraform {
 
 # Boundary cluster information
 provider "boundary" {
-  addr   = "https://xxxx.boundary.hashicorp.cloud"   # Replace with cluster URL
+  addr   = "https://sos-boundary.scc-services.app"   # Replace with cluster URL
   auth_method_id                  = "ampw_xxxxxxx"   # Replace with auth method ID
-  password_auth_method_login_name = "admin"          # Replace with login name 
+  password_auth_method_login_name = "Scc-Services"   # Replace with login name 
   password_auth_method_password   = "password"       # Replace with password
 }
 
 # Org scope setup, which belongs to the global scope
-resource "boundary_scope" "MyOrg" {
+resource "boundary_scope" "SCCServices" {
   scope_id                 = "global"
-  name                     = "MyOrgName"
+  name                     = "SCC-Services"
   auto_create_admin_role   = true
 }
 
 # Project scope setup, which belongs to the MyOrg scope
-resource "boundary_scope" "MyProject" {
-  scope_id                 = boundary_scope.MyOrg.id
-  name                     = "MyProjectName"
-  auto_create_admin_role   = true
+resource "boundary_scope" "Data" {
+  scope_id                 = boundary_scope.SCCServices.id
+  name                     = "Equipe Data"
+  auto_create_admin_role   = false
+}
+
+resource "boundary_scope" "DevWeb" {
+  scope_id                 = boundary_scope.SCCServices.id
+  name                     = "Equipe Dev web"
+  auto_create_admin_role   = false
 }
 
 
@@ -42,9 +48,9 @@ resource "boundary_scope" "MyProject" {
 #======================================================================================
 
 # Auth Method setup in the global scope
-resource "boundary_auth_method" "MyAuthMethod" {
+resource "boundary_auth_method" "MyGlobalAuthMethod" {
   scope_id = "global"
-  name     = "MyAuthMethodName"
+  name     = "Login Password"
   type     = "password"
 }
 
@@ -75,8 +81,8 @@ resource "boundary_role" "MyGlobalRole" {
 
 # Org role creation with MyUser as the principal
 # Principals in this role have full permissions to MyOrg
-resource "boundary_role" "MyOrgRole" {
-  name          = "MyOrgRoleName"
+resource "boundary_role" "GlobalAdmin" {
+  name          = "GlobalAdmin"
   principal_ids = [boundary_user.MyUser.id]
   scope_id      = boundary_scope.MyOrg.id
   grant_strings = ["id=*;type=*;actions=*"]

@@ -128,7 +128,7 @@ resource "azurerm_linux_virtual_machine" "controller" {
       db_username      = var.db_username
       db_password      = var.db_password
       db_name          = local.pg_name
-      db_endpoint      = azurerm_postgresql_server.boundary.fqdn
+      db_endpoint      = azurerm_postgresql_flexible_server.SOSPgsql.fqdn
     })
   )
 }
@@ -176,7 +176,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
   ]
 
   admin_ssh_key {
-    username   = "azureuser"
+    username   = "sos-admin"
     public_key = tls_private_key.boundary.public_key_openssh
   }
 
@@ -192,7 +192,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
+    sku       = "22.04-LTS"
     version   = "latest"
   }
 
@@ -221,7 +221,7 @@ resource "azurerm_linux_virtual_machine" "worker" {
       db_username      = var.db_username
       db_password      = var.db_password
       db_name          = local.pg_name
-      db_endpoint      = azurerm_postgresql_server.boundary.fqdn
+      db_endpoint      = azurerm_postgresql_flexible_server.SOSPgsql.fqdn
     })
   )
 

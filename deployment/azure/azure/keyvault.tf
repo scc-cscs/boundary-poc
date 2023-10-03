@@ -100,7 +100,7 @@ resource "azurerm_key_vault_access_policy" "sp" {
   key_vault_id = azurerm_key_vault.boundary.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = azuread_service_principal.recovery_sp.id
+  object_id = azuread_service_principal.SOS-Boundary-Recovery_SP.id
 
   key_permissions = [
     "get", "list", "wrapKey",

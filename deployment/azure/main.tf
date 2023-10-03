@@ -3,13 +3,13 @@
 
 variable "boundary_version" {
   type    = string
-  default = "0.5.1"
+  default = "0.13.1"
 }
 
 module "azure" {
   source              = "./azure"
   controller_vm_count = 1
-  worker_vm_count     = 1
+  worker_vm_count     = 0
   boundary_version    = var.boundary_version
 }
 

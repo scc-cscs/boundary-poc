@@ -5,7 +5,7 @@
 # You might not want a new Vnet. Too bad.
 variable "location" {
   type    = string
-  default = "eastus"
+  default = "francecentral"
 }
 
 variable "address_space" {
@@ -34,7 +34,7 @@ variable "subnet_names" {
 # This seems like a reasonable size, feel free to change
 variable "controller_vm_size" {
   type    = string
-  default = "Standard_D2as_v4"
+  default = "Standard_B2als_v2"
 }
 
 variable "controller_vm_count" {
@@ -44,27 +44,27 @@ variable "controller_vm_count" {
 
 variable "worker_vm_size" {
   type    = string
-  default = "Standard_D2as_v4"
+  default = "Standard_B2als_v2"
 }
 
 variable "backend_vm_count" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "backend_vm_size" {
   type    = string
-  default = "Standard_D2as_v4"
+  default = "Standard_B2als_v2"
 }
 
 variable "worker_vm_count" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "db_username" {
   type    = string
-  default = "sqladmin"
+  default = "scc-services-psql"
 }
 
 variable "db_password" {
@@ -74,12 +74,12 @@ variable "db_password" {
 
 variable "cert_cn" {
   type    = string
-  default = "boundary-azure"
+  default = "scc-services-boundary-azure"
 }
 
 variable "boundary_version" {
   type    = string
-  default = "0.1.8"
+  default = "0.13.1"
 }
 
 resource "random_id" "id" {
@@ -87,35 +87,35 @@ resource "random_id" "id" {
 }
 
 locals {
-  resource_group_name = "boundary-${random_id.id.hex}"
+  resource_group_name = "rg-bastion"
 
-  controller_net_nsg = "controller-net-${random_id.id.hex}"
-  worker_net_nsg     = "worker-net-${random_id.id.hex}"
-  backend_net_nsg    = "backend-net-${random_id.id.hex}"
+  controller_net_nsg = "bastion-controller-net"
+  worker_net_nsg     = "bastion-worker-net"
+  backend_net_nsg    = "bastion-backend-net"
 
-  controller_nic_nsg = "controller-nic-${random_id.id.hex}"
-  worker_nic_nsg     = "worker-nic-${random_id.id.hex}"
-  backend_nic_nsg    = "backend-nic-${random_id.id.hex}"
+  controller_nic_nsg = "bastion-controller-nic"
+  worker_nic_nsg     = "bastion-worker-nic"
+  backend_nic_nsg    = "bastion-backend-nic"
 
-  controller_asg = "controller-asg-${random_id.id.hex}"
-  worker_asg     = "worker-asg-${random_id.id.hex}"
-  backend_asg    = "backend-asg-${random_id.id.hex}"
+  controller_asg = "bastion-controller-asg"
+  worker_asg     = "bastion-worker-asg"
+  backend_asg    = "bastion-backend-asg"
 
-  controller_vm = "controller-${random_id.id.hex}"
-  worker_vm     = "worker-${random_id.id.hex}"
-  backend_vm    = "backend-${random_id.id.hex}"
+  controller_vm = "bastion-controller"
+  worker_vm     = "bastion-worker"
+  backend_vm    = "bastion-backend"
 
-  controller_user_id = "controller-userid-${random_id.id.hex}"
-  worker_user_id     = "worker-userid-${random_id.id.hex}"
+  controller_user_id = "controller-userid"
+  worker_user_id     = "worker-userid"
 
-  pip_name = "boundary-${random_id.id.hex}"
-  lb_name  = "boundary-${random_id.id.hex}"
+  pip_name = "bastion-public_ip"
+  lb_name  = "bastion-load_balancer"
 
-  vault_name = "boundary-${random_id.id.hex}"
+  vault_name = "bastion-keyvault"
 
-  pg_name = "boundary-${random_id.id.hex}"
+  pg_name = "sos-pgsql"
 
-  sp_name = "boundary-${random_id.id.hex}"
+  sp_name = "SOS-Boundary-Recovery SP"
 
   cert_san = ["boundary-${random_id.id.hex}.${var.location}.cloudapp.azure.com"]
 

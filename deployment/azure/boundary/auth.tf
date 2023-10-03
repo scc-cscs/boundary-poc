@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: MPL-2.0
 
 resource "boundary_auth_method_password" "password" {
-  name        = "corp_password_auth_method"
-  description = "Password auth method for Corp org"
+  name        = "Login_password"
+  description = "Connexion par Login / mot de passe"
   scope_id    = boundary_scope.org.id
 }
 

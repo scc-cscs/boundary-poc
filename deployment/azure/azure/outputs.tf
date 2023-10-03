@@ -17,11 +17,11 @@ output "url" {
 }
 
 output "client_id" {
-  value = azuread_service_principal.recovery_sp.application_id
+  value = azuread_service_principal.SOS-Boundary-Recovery_SP.application_id
 }
 
 output "client_secret" {
-  value = azuread_service_principal_password.recovery_sp.value
+  value = azuread_service_principal_password.SOS-Boundary-Recovery_SP.value
 }
 
 output "target_ips" {
